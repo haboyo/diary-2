@@ -2,488 +2,421 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Bong's Diary</title>
-    
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Bong's Diary">
-    
-    <link rel="apple-touch-icon" href="Remove%20the%20white%20rou.jpg">
-    <link rel="icon" type="image/jpeg" href="Remove%20the%20white%20rou.jpg">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지윤님을 위한 일본어 마스터</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Inter:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Noto+Sans+JP:wght@700&family=Nanum+Pen+Script&display=swap');
         
-        :root {
-            --bg-main: #FDFCF8;
-            --text-main: #1A1A1A;
-            --soft-gray: #F1F0EB;
-            --weekend-sun: #E15B5B;
-            --weekend-sat: #5B82E1;
-        }
-
-        html, body {
-            position: fixed;
-            overflow: hidden;
-            width: 100%;
-            height: 100%;
-            background-color: var(--bg-main);
-        }
-
         body {
-            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8fafc;
+            user-select: none;
             -webkit-tap-highlight-color: transparent;
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            letter-spacing: -0.01em;
+        }
+        .jp-font { font-family: 'Noto Sans JP', sans-serif; }
+        .handwriting { font-family: 'Nanum+Pen+Script', cursive; }
+        .text-giant { font-size: 6.5rem; }
+        .character-card { transition: all 0.15s ease; }
+        .character-card:active { transform: scale(0.92); background-color: #f0f7ff; }
+        .sticky-nav { position: sticky; top: 0; z-index: 40; background: white; }
+        
+        /* 말풍선 꼬리 */
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 30px;
+            border-width: 15px 15px 0 0;
+            border-style: solid;
+            border-color: white transparent transparent transparent;
         }
 
-        .app-container {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            padding-top: env(safe-area-inset-top);
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
-
-        header { flex-shrink: 0; background: var(--bg-main); z-index: 10; }
-        main { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: 20px; }
-        
-        /* 하단 내비게이션 바: 사이즈 확대 및 하단 띄우기 */
-        nav { 
-            flex-shrink: 0; 
-            padding-bottom: calc(env(safe-area-inset-bottom) + 12px); 
-            padding-top: 12px;
-            background: rgba(253, 252, 248, 0.95); 
-            backdrop-filter: blur(10px); 
-            border-top: 1px solid #F1F0EB; 
-        }
-
-        .cursive-title { font-family: 'Dancing Script', cursive; font-size: 1.6rem; color: var(--text-main); opacity: 0.8; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        .btn-press:active { transform: scale(0.96); transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        textarea:focus, input:focus { outline: none; }
-        
-        .journal-textarea { font-size: 14.5px !important; line-height: 1.7; width: 100%; height: 100%; min-height: 250px; }
-        
-        .fade-in { animation: fadeIn 0.3s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-
-        .calendar-dot { width: 4px; height: 4px; background-color: var(--text-main); border-radius: 50%; margin-top: 2px; opacity: 0.4; }
-        .text-sun { color: var(--weekend-sun) !important; }
-        .text-sat { color: var(--weekend-sat) !important; }
-
-        .action-icon-btn { background: var(--soft-gray); border-radius: 8px; padding: 6px 12px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 4px; }
-        .share-btn { background: #E8E8E2; color: var(--text-main); font-weight: 800; }
-
-        .tag-pill { display: inline-block; background: #f0f0eb; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; color: #777; margin-right: 3px; margin-top: 3px; }
-        .tag-select { cursor: pointer; transition: all 0.2s; border: 1px solid transparent; }
-        .tag-select:active { background: #1A1A1A; color: white; }
-    
-        .week-slider-container { display: flex; align-items: center; justify-content: space-between; position: relative; }
-        .week-days-scroll { display: flex; justify-content: space-between; width: 100%; }
-
-        .memo-input-card { background: #F1F0EB; border-radius: 16px; padding: 12px; }
-        .memo-textarea-small { font-size: 14px !important; background: transparent; width: 100%; min-height: 80px; resize: none; border: none; }
-        .memo-tag-input-small { font-size: 12px !important; background: white; border-radius: 8px; padding: 6px 10px; width: 100%; font-weight: 600; }
+        .animate-bounce-slow { animation: bounce 3s infinite; }
     </style>
 </head>
-<body>
-    <div id="root" style="width: 100%; height: 100%;"></div>
-
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-    <script type="text/babel">
-        const { useState, useEffect, useMemo, useRef } = React;
-
-        const HOLIDAYS = {
-            "2025-01-01": "신정", "2025-01-28": "설날", "2025-01-29": "설날", "2025-01-30": "설날", "2025-03-01": "삼일절", "2025-03-03": "대체공휴일", "2025-05-05": "어린이날", "2025-05-06": "대체공휴일", "2025-06-06": "현충일", "2025-08-15": "광복절", "2025-10-03": "개천절", "2025-10-05": "추석", "2025-10-06": "추석", "2025-10-07": "추석", "2025-10-08": "대체공휴일", "2025-10-09": "한글날", "2025-12-25": "성탄절"
-        };
-
-        const App = () => {
-            const [activeTab, setActiveTab] = useState('Journal');
-            const [currentDate, setCurrentDate] = useState(new Date());
-            const [viewMonth, setViewMonth] = useState(new Date());
-            const [showCalendar, setShowCalendar] = useState(false);
-            const [message, setMessage] = useState('');
-            const [copyStatus, setCopyStatus] = useState({});
-            
-            const [weekAnchor, setWeekAnchor] = useState(() => {
-                const d = new Date();
-                d.setDate(d.getDate() - d.getDay());
-                return d;
-            });
-            
-            const fileInputRef = useRef(null);
-            
-            const STORAGE_KEY = 'bong_diary_v34_stable';
-            const [journals, setJournals] = useState(() => JSON.parse(localStorage.getItem(`${STORAGE_KEY}_journals`) || '{}'));
-            const [memos, setMemos] = useState(() => JSON.parse(localStorage.getItem(`${STORAGE_KEY}_memos`) || '[]'));
-            const [todos, setTodos] = useState(() => JSON.parse(localStorage.getItem(`${STORAGE_KEY}_todos`) || '[]'));
-
-            const [newTodo, setNewTodo] = useState('');
-            const [newMemo, setNewMemo] = useState({ content: '', tag: '' });
-            const [searchQuery, setSearchQuery] = useState('');
-
-            const existingTags = useMemo(() => {
-                const tags = new Set();
-                memos.forEach(m => (m.tags || []).forEach(t => tags.add(t)));
-                return Array.from(tags).sort();
-            }, [memos]);
-
-            useEffect(() => {
-                localStorage.setItem(`${STORAGE_KEY}_journals`, JSON.stringify(journals));
-                localStorage.setItem(`${STORAGE_KEY}_memos`, JSON.stringify(memos));
-                localStorage.setItem(`${STORAGE_KEY}_todos`, JSON.stringify(todos));
-            }, [journals, memos, todos]);
-
-            useEffect(() => { if (window.lucide) window.lucide.createIcons(); });
-
-            useEffect(() => {
-                const d = new Date(currentDate);
-                d.setDate(d.getDate() - d.getDay());
-                setWeekAnchor(d);
-            }, [currentDate]);
-
-            const showToast = (msg) => {
-                setMessage(msg);
-                setTimeout(() => setMessage(''), 2000);
-            };
-
-            const getHolidayName = (date) => {
-                const y = date.getFullYear();
-                const m = String(date.getMonth() + 1).padStart(2, '0');
-                const d = String(date.getDate()).padStart(2, '0');
-                return HOLIDAYS[`${y}-${m}-${d}`];
-            };
-
-            const formatDateForCopy = (date) => {
-                const mm = String(date.getMonth() + 1).padStart(2, '0');
-                const dd = String(date.getDate()).padStart(2, '0');
-                return `${mm}/${dd}`;
-            };
-
-            const handleCopy = (id, text, dateObj = null) => {
-                if (!text || text.trim() === "") return showToast('내용이 없습니다');
-                let finalContent = text;
-                if (dateObj) finalContent = `${formatDateForCopy(dateObj)}\n\n${text}`;
-
-                const textArea = document.createElement("textarea");
-                textArea.value = finalContent;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                setCopyStatus(prev => ({ ...prev, [id]: true }));
-                showToast('복사되었습니다');
-                setTimeout(() => setCopyStatus(prev => ({ ...prev, [id]: false })), 1500);
-            };
-
-            const handleNativeShare = async (text, dateObj) => {
-                if (!text || text.trim() === "") return showToast('공유할 내용이 없습니다');
-                const finalContent = `${formatDateForCopy(dateObj)}\n\n${text}`;
-                if (navigator.share) {
-                    try { await navigator.share({ title: "Bong's Diary", text: finalContent }); }
-                    catch (err) { if (err.name !== 'AbortError') showToast('공유 실패'); }
-                } else {
-                    handleCopy('share_btn', text, dateObj);
-                }
-            };
-
-            const moveWeek = (offset) => {
-                const newAnchor = new Date(weekAnchor);
-                newAnchor.setDate(weekAnchor.getDate() + (offset * 7));
-                setWeekAnchor(newAnchor);
-                const newCurrent = new Date(currentDate);
-                newCurrent.setDate(currentDate.getDate() + (offset * 7));
-                setCurrentDate(newCurrent);
-            };
-
-            const handleTagSelect = (tag) => {
-                let currentTags = newMemo.tag.split(',').map(t => t.trim()).filter(t => t !== '');
-                if (currentTags.includes(tag)) {
-                    currentTags = currentTags.filter(t => t !== tag);
-                } else {
-                    currentTags.push(tag);
-                }
-                setNewMemo({ ...newMemo, tag: currentTags.join(', ') });
-            };
-
-            const saveMemo = () => {
-                if(!newMemo.content.trim()) return; 
-                const tags = newMemo.tag.split(',').map(t => {
-                    let trimT = t.trim();
-                    if (!trimT) return '';
-                    return trimT.startsWith('#') ? trimT : `#${trimT}`;
-                }).filter(t => t !== '');
-                setMemos([{id:Date.now(), content:newMemo.content, tags: tags, date: new Date().toLocaleDateString()}, ...memos]); 
-                setNewMemo({content:'', tag:''}); 
-                showToast('메모 저장됨');
-            };
-
-            const exportData = () => {
-                const data = JSON.stringify({journals, memos, todos});
-                const blob = new Blob([data], {type:'application/json'});
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(blob);
-                a.download = `bongs_diary_${new Date().toISOString().split('T')[0]}.json`;
-                a.click();
-                showToast('백업 파일이 생성되었습니다');
-            };
-
-            const importData = (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    try {
-                        const data = JSON.parse(ev.target.result);
-                        if (data.journals) setJournals(data.journals);
-                        if (data.memos) setMemos(data.memos);
-                        if (data.todos) setTodos(data.todos);
-                        showToast('데이터 복구 성공');
-                    } catch (err) {
-                        showToast('파일 형식이 잘못되었습니다');
-                    }
-                };
-                reader.readAsText(file);
-            };
-
-            return (
-                <div className="app-container">
-                    {message && (
-                        <div className="fixed top-12 left-1/2 -translate-x-1/2 z-[2000] bg-[#1A1A1A] text-white px-5 py-2 rounded-full text-[10px] font-bold shadow-2xl fade-in text-center">
-                            {message}
-                        </div>
-                    )}
-
-                    <header className="px-5 pt-5 pb-2">
-                        <div className="flex justify-between items-start mb-3">
-                            <div className="flex-1">
-                                <div className="cursive-title h-7">Bong's Diary</div>
-                                <div className="flex items-center gap-2 mt-1 h-10">
-                                    <button onClick={() => { setViewMonth(new Date(currentDate)); setShowCalendar(true); }} className="text-2xl font-black tracking-tighter flex items-center gap-1.5 btn-press">
-                                        {currentDate.toLocaleDateString('ko-KR', { month: 'long', day: 'numeric' })}
-                                        <i data-lucide="calendar" className="w-5 h-5 opacity-20"></i>
-                                    </button>
-                                    {getHolidayName(currentDate) && (
-                                        <div className="px-2 py-0.5 bg-red-50 text-[10px] font-bold text-sun rounded border border-red-100 whitespace-nowrap">
-                                            {getHolidayName(currentDate)}
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                            <button onClick={() => {
-                                const today = new Date();
-                                setCurrentDate(today);
-                                const sun = new Date();
-                                sun.setDate(today.getDate() - today.getDay());
-                                setWeekAnchor(sun);
-                            }} className="mt-3 text-[10px] font-black tracking-widest opacity-40 uppercase border-b border-black/10 flex-shrink-0">Today</button>
-                        </div>
-
-                        {activeTab === 'Journal' && (
-                            <div className="week-slider-container px-0.5 pb-2">
-                                <button onClick={() => moveWeek(-1)} className="p-1.5 opacity-20 btn-press"><i data-lucide="chevron-left" className="w-4 h-4"></i></button>
-                                <div className="week-days-scroll">
-                                    {Array.from({ length: 7 }, (_, i) => {
-                                        const d = new Date(weekAnchor);
-                                        d.setDate(weekAnchor.getDate() + i);
-                                        const isSelected = d.toDateString() === currentDate.toDateString();
-                                        const hDay = getHolidayName(d);
-                                        const isSun = d.getDay() === 0 || hDay;
-                                        const isSat = d.getDay() === 6;
-                                        return (
-                                            <button key={i} onClick={() => setCurrentDate(d)} className="flex flex-col items-center">
-                                                <span className={`text-[9px] font-black mb-2 ${isSelected ? 'opacity-100' : 'opacity-20'} ${isSun?'text-sun':isSat?'text-sat':''}`}>{['SUN','MON','TUE','WED','THU','FRI','SAT'][d.getDay()]}</span>
-                                                <span className={`text-[13px] w-8 h-8 flex items-center justify-center rounded-full transition-all ${isSelected ? 'bg-[#1A1A1A] text-white font-bold shadow' : isSun ? 'text-sun opacity-60' : 'text-slate-400'}`}>{d.getDate()}</span>
-                                            </button>
-                                        );
-                                    })}
-                                </div>
-                                <button onClick={() => moveWeek(1)} className="p-1.5 opacity-20 btn-press"><i data-lucide="chevron-right" className="w-4 h-4"></i></button>
-                            </div>
-                        )}
-                    </header>
-
-                    <main className="no-scrollbar px-5">
-                        {activeTab === 'Journal' && (
-                            <div className="h-full flex flex-col fade-in pt-1">
-                                <div className="flex justify-between items-center mb-4">
-                                    <span className="text-[10px] font-black tracking-widest uppercase opacity-30">Daily Record</span>
-                                    <div className="flex items-center gap-2">
-                                        <button onClick={() => handleCopy('j_copy', journals[currentDate.toDateString()], currentDate)} className="action-icon-btn btn-press opacity-60">
-                                            <i data-lucide={copyStatus['j_copy'] ? "check" : "copy"} className="w-4 h-4"></i>
-                                        </button>
-                                        <button onClick={() => handleNativeShare(journals[currentDate.toDateString()], currentDate)} className="action-icon-btn share-btn btn-press">
-                                            <i data-lucide="share" className="w-3.5 h-3.5"></i>
-                                            <span className="text-[10px] font-black uppercase">Share</span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <textarea className="flex-1 bg-transparent border-none resize-none journal-textarea placeholder:opacity-10 no-scrollbar" placeholder="오늘 하루는 어땠나요?" value={journals[currentDate.toDateString()] || ''} onChange={(e) => setJournals({...journals, [currentDate.toDateString()]: e.target.value})} />
-                            </div>
-                        )}
-
-                        {activeTab === 'Todo' && (
-                            <div className="fade-in space-y-3 pt-3">
-                                <div className="flex items-center gap-2 bg-[#F1F0EB] rounded-xl px-4 py-3">
-                                    <input className="flex-1 bg-transparent text-[15px]" placeholder="할 일을 입력하세요" value={newTodo} onChange={e => setNewTodo(e.target.value)} onKeyDown={e => e.key === 'Enter' && (()=>{if(!newTodo)return;setTodos([{id:Date.now(),text:newTodo,done:false},...todos]);setNewTodo('')})()} />
-                                    <button onClick={()=>{if(!newTodo)return;setTodos([{id:Date.now(),text:newTodo,done:false},...todos]);setNewTodo('')}} className="bg-[#1A1A1A] text-white p-1.5 rounded-lg"><i data-lucide="plus" className="w-4 h-4"></i></button>
-                                </div>
-                                {todos.map(t => (
-                                    <div key={t.id} className="flex items-center gap-3 bg-white/60 p-4 rounded-xl border border-black/5">
-                                        <button onClick={() => setTodos(todos.map(item => item.id === t.id ? {...item, done: !item.done} : item))} className={`w-5 h-5 rounded-md border-2 flex items-center justify-center ${t.done ? 'bg-green-500 border-green-500' : 'border-slate-300'}`}>
-                                            {t.done && <i data-lucide="check" className="w-3 h-3 text-white"></i>}
-                                        </button>
-                                        <span className={`text-[14px] flex-1 ${t.done ? 'opacity-30 line-through' : ''}`}>{t.text}</span>
-                                        <button onClick={() => setTodos(todos.filter(item => item.id !== t.id))} className="opacity-10"><i data-lucide="x" className="w-4 h-4"></i></button>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-
-                        {activeTab === 'Memo' && (
-                            <div className="fade-in space-y-4 pt-3 pb-8">
-                                <div className="memo-input-card space-y-2.5">
-                                    <input className="memo-tag-input-small" placeholder="#태그 (쉼표 구분)" value={newMemo.tag} onChange={e => setNewMemo({...newMemo, tag: e.target.value})} />
-                                    {existingTags.length > 0 && (
-                                        <div className="flex flex-wrap gap-1 py-1 max-h-16 overflow-y-auto no-scrollbar">
-                                            {existingTags.map((tag, i) => (
-                                                <span key={i} onClick={() => handleTagSelect(tag)} className={`tag-pill tag-select ${newMemo.tag.includes(tag) ? 'bg-[#1A1A1A] text-white' : 'bg-white'}`}>
-                                                    {tag}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    )}
-                                    <textarea className="memo-textarea-small" placeholder="메모 내용을 입력하세요" value={newMemo.content} onChange={e => setNewMemo({...newMemo, content: e.target.value})} />
-                                    <button onClick={saveMemo} className="w-full py-2.5 bg-[#1A1A1A] text-white text-[10px] font-black rounded-lg uppercase tracking-widest btn-press">Save Memo</button>
-                                </div>
-                                <div className="space-y-3">
-                                    {memos.map(m => (
-                                        <div key={m.id} className="bg-white p-4 rounded-xl shadow-sm border border-black/5">
-                                            <div className="flex justify-between items-center mb-2">
-                                                <div className="flex flex-wrap">{(m.tags || []).map((tag, idx) => (<span key={idx} className="tag-pill">{tag}</span>))}</div>
-                                                <div className="flex items-center gap-2">
-                                                    <button onClick={() => handleCopy(m.id, m.content)} className="opacity-30"><i data-lucide={copyStatus[m.id] ? "check" : "copy"} className="w-3.5 h-3.5"></i></button>
-                                                    <button onClick={() => setMemos(memos.filter(item => item.id !== m.id))} className="opacity-10"><i data-lucide="trash-2" className="w-3.5 h-3.5"></i></button>
-                                                </div>
-                                            </div>
-                                            <p className="text-[14px] leading-snug whitespace-pre-wrap opacity-80">{m.content}</p>
-                                            <div className="mt-2 text-[8px] font-black opacity-10 text-right uppercase tracking-tighter">{m.date}</div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {activeTab === 'Search' && (
-                            <div className="fade-in pt-3">
-                                <input className="w-full bg-[#F1F0EB] rounded-xl px-5 py-3 text-[15px] mb-4" placeholder="기록 검색" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
-                                {searchQuery && (
-                                    <div className="space-y-2">
-                                        {Object.entries(journals).filter(([_,v])=>v.includes(searchQuery)).map(([d,v],i)=>(
-                                            <button key={i} onClick={()=>{setCurrentDate(new Date(d));setActiveTab('Journal')}} className="w-full text-left p-4 bg-white rounded-xl border border-black/5">
-                                                <div className="text-[9px] font-black opacity-20 mb-1">{d}</div>
-                                                <div className="text-[13px] line-clamp-2 opacity-60">{v}</div>
-                                            </button>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-                        {activeTab === 'Setting' && (
-                            <div className="fade-in space-y-3 pt-3">
-                                <div className="bg-white p-6 rounded-2xl border border-black/5 space-y-5">
-                                    <div>
-                                        <h3 className="text-[11px] font-black tracking-widest uppercase opacity-30 mb-4">Data Management</h3>
-                                        <div className="space-y-3">
-                                            <button onClick={exportData} className="w-full flex items-center justify-between px-5 py-4 bg-[#F1F0EB] text-[#1A1A1A] rounded-xl btn-press">
-                                                <span className="text-[11px] font-black uppercase tracking-wider">Export JSON (내보내기)</span>
-                                                <i data-lucide="download" className="w-4 h-4 opacity-40"></i>
-                                            </button>
-                                            <button onClick={() => fileInputRef.current.click()} className="w-full flex items-center justify-between px-5 py-4 border-2 border-[#1A1A1A] text-[#1A1A1A] rounded-xl btn-press">
-                                                <span className="text-[11px] font-black uppercase tracking-wider">Import JSON (불러오기)</span>
-                                                <i data-lucide="upload" className="w-4 h-4 opacity-40"></i>
-                                            </button>
-                                            <input type="file" ref={fileInputRef} onChange={importData} accept=".json" className="hidden" />
-                                        </div>
-                                    </div>
-                                    <div className="pt-4 border-t border-black/5">
-                                        <h3 className="text-[11px] font-black tracking-widest uppercase opacity-30 mb-4">System Info</h3>
-                                        <div className="flex justify-between items-center px-2">
-                                            <span className="text-[10px] opacity-40 font-bold uppercase">Version</span>
-                                            <span className="text-[10px] font-black">v3.4 Final</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </main>
-
-                    {/* 내비게이션 바: 아이콘 사이즈 업 및 여백 조정 */}
-                    <nav className="px-4 flex justify-between items-center shadow-[0_-2px_10px_rgba(0,0,0,0.02)]">
-                        {[
-                            { id: 'Journal', icon: 'book-open' }, 
-                            { id: 'Todo', icon: 'check-square' }, 
-                            { id: 'Memo', icon: 'feather' }, 
-                            { id: 'Search', icon: 'search' }, 
-                            { id: 'Setting', icon: 'settings' }
-                        ].map(tab => (
-                            <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`flex flex-col items-center flex-1 transition-all ${activeTab === tab.id ? 'opacity-100 scale-105' : 'opacity-20'}`}>
-                                <i data-lucide={tab.icon} className="w-[22px] h-[22px]" style={{strokeWidth: 2.5}}></i>
-                                <span className="text-[9px] font-black mt-1.5 tracking-tighter uppercase">{tab.id}</span>
-                            </button>
-                        ))}
-                    </nav>
-
-                    {showCalendar && (
-                        <div className="absolute inset-0 z-[1100] bg-[#FDFCF8] flex flex-col p-6 fade-in" onClick={() => setShowCalendar(false)}>
-                            <div className="flex justify-between items-center mb-8" onClick={e=>e.stopPropagation()}>
-                                <span className="text-2xl font-black tracking-tighter">{viewMonth.getFullYear()}. {viewMonth.getMonth()+1}</span>
-                                <div className="flex gap-2">
-                                    <button onClick={()=>setViewMonth(new Date(viewMonth.getFullYear(), viewMonth.getMonth()-1, 1))} className="p-2 bg-[#F1F0EB] rounded-lg"><i data-lucide="chevron-left" className="w-5 h-5"></i></button>
-                                    <button onClick={()=>setViewMonth(new Date(viewMonth.getFullYear(), viewMonth.getMonth()+1, 1))} className="p-2 bg-[#F1F0EB] rounded-lg"><i data-lucide="chevron-right" className="w-5 h-5"></i></button>
-                                </div>
-                            </div>
-                            <div className="grid grid-cols-7 gap-y-4 text-center" onClick={e=>e.stopPropagation()}>
-                                {['S','M','T','W','T','F','S'].map((d,i)=><span key={i} className={`text-[10px] font-black opacity-20 ${i===0?'text-sun':i===6?'text-sat':''}`}>{d}</span>)}
-                                {Array.from({length: new Date(viewMonth.getFullYear(), viewMonth.getMonth(), 1).getDay()}).map((_,i)=><div key={i}/>)}
-                                {Array.from({length: new Date(viewMonth.getFullYear(), viewMonth.getMonth()+1, 0).getDate()}).map((_,i)=>{
-                                    const d = new Date(viewMonth.getFullYear(), viewMonth.getMonth(), i+1);
-                                    const isSelected = d.toDateString() === currentDate.toDateString();
-                                    const hDay = getHolidayName(d);
-                                    const isSun = d.getDay() === 0 || hDay;
-                                    const isSat = d.getDay() === 6;
-                                    return (
-                                        <button key={i} onClick={()=>{setCurrentDate(d);setShowCalendar(false)}} className={`relative flex flex-col items-center py-3 ${isSelected ? 'bg-[#1A1A1A] text-white rounded-xl shadow-md' : ''}`}>
-                                            <span className={`text-[15px] font-bold ${!isSelected && isSun ? 'text-sun' : !isSelected && isSat ? 'text-sat' : ''}`}>{i+1}</span>
-                                            {journals[d.toDateString()] && !isSelected && <div className="calendar-dot" />}
-                                            {hDay && <div className="text-[6px] font-black absolute bottom-0.5 truncate w-full px-1 overflow-hidden leading-tight" style={{color: isSelected ? 'white' : 'var(--weekend-sun)'}}>{hDay}</div>}
-                                        </button>
-                                    )
-                                })}
-                            </div>
-                        </div>
-                    )}
+<body class="min-h-screen pb-10">
+    <div id="app" class="max-w-3xl mx-auto bg-white min-h-screen shadow-2xl flex flex-col">
+        
+        <!-- Cheer Section (상단 응원 사진 영역) -->
+        <div class="bg-gradient-to-b from-indigo-500 to-indigo-600 p-6 pt-10 relative overflow-hidden">
+            <div class="relative z-10 flex flex-col items-start gap-4">
+                <!-- 말풍선 -->
+                <div class="speech-bubble bg-white text-indigo-900 p-5 rounded-[2rem] shadow-xl relative mb-4 animate-bounce-slow">
+                    <p class="text-2xl font-black handwriting tracking-wide">
+                        "지윤아 넌 할 수 있어!! 응원할게!! ✨"
+                    </p>
                 </div>
-            );
+                <!-- 인물 사진 (사용자가 제공한 image.png 활용) -->
+                <div class="flex items-center gap-4">
+                    <div class="w-24 h-24 rounded-full border-4 border-white overflow-hidden shadow-2xl">
+                        <img src="image.png" alt="응원하는 사람" class="w-full h-full object-cover" onerror="this.src='https://api.dicebear.com/7.x/avataaars/svg?seed=Felix'">
+                    </div>
+                    <div class="text-white">
+                        <h1 class="text-2xl font-black leading-none mb-1">지윤님 전용 학습기</h1>
+                        <p class="text-indigo-200 text-sm font-bold opacity-80 uppercase tracking-widest">7 Days Challenge</p>
+                    </div>
+                </div>
+            </div>
+            <!-- 배경 장식 -->
+            <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white opacity-10 rounded-full"></div>
+            <div class="absolute right-20 top-10 w-20 h-20 bg-yellow-400 opacity-20 rounded-full blur-xl"></div>
+        </div>
+
+        <!-- Main Navigation -->
+        <nav class="flex sticky-nav shadow-md border-b">
+            <button onclick="switchTab('plan')" id="tab-plan" class="flex-1 py-5 text-xl font-bold text-indigo-600 border-b-4 border-indigo-600">학습 플랜</button>
+            <button onclick="switchTab('study')" id="tab-study" class="flex-1 py-5 text-xl font-bold text-gray-400 border-b-4 border-transparent">학습하기</button>
+            <button onclick="switchTab('quiz')" id="tab-quiz" class="flex-1 py-5 text-xl font-bold text-gray-400 border-b-4 border-transparent">퀴즈</button>
+        </nav>
+
+        <!-- 1. Plan Content -->
+        <main id="content-plan" class="p-6 space-y-4">
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="text-2xl font-black text-slate-800">🗓️ 7일 로드맵</h2>
+                <span class="text-indigo-500 font-bold bg-indigo-50 px-3 py-1 rounded-lg text-sm italic">Fighting!</span>
+            </div>
+            
+            <div id="plan-list" class="space-y-4">
+                <!-- Day Items -->
+                <div onclick="goToDay(1)" class="group p-6 border-2 border-slate-100 rounded-[2rem] cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/30 transition flex items-center justify-between bg-white shadow-sm">
+                    <div class="flex items-center gap-5">
+                        <div class="w-14 h-14 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 font-black text-xl">1</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800">히라가나 (あ/か행)</h3>
+                            <p class="text-slate-400 font-medium">기본의 시작, 10자 정복</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-indigo-300 group-hover:translate-x-1 transition"></i>
+                </div>
+
+                <div onclick="goToDay(2)" class="group p-6 border-2 border-slate-100 rounded-[2rem] cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/30 transition flex items-center justify-between bg-white shadow-sm">
+                    <div class="flex items-center gap-5">
+                        <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 font-black text-xl">2</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800">히라가나 (さ/た행)</h3>
+                            <p class="text-slate-400 font-medium">익숙해지는 단계, 10자</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-blue-300 group-hover:translate-x-1 transition"></i>
+                </div>
+
+                <div onclick="goToDay(3)" class="group p-6 border-2 border-slate-100 rounded-[2rem] cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/30 transition flex items-center justify-between bg-white shadow-sm">
+                    <div class="flex items-center gap-5">
+                        <div class="w-14 h-14 bg-cyan-100 rounded-2xl flex items-center justify-center text-cyan-600 font-black text-xl">3</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800">히라가나 (나/하행)</h3>
+                            <p class="text-slate-400 font-medium">모양이 복잡해지는 구간, 10자</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-cyan-300 group-hover:translate-x-1 transition"></i>
+                </div>
+
+                <div onclick="goToDay(4)" class="group p-6 border-2 border-slate-100 rounded-[2rem] cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/30 transition flex items-center justify-between bg-white shadow-sm">
+                    <div class="flex items-center gap-5">
+                        <div class="w-14 h-14 bg-teal-100 rounded-2xl flex items-center justify-center text-teal-600 font-black text-xl">4</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800">히라가나 마무리</h3>
+                            <p class="text-slate-400 font-medium">마지막 16자 몰아치기</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-teal-300 group-hover:translate-x-1 transition"></i>
+                </div>
+
+                <div onclick="goToDay(5)" class="group p-6 border-2 border-slate-100 rounded-[2rem] cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/30 transition flex items-center justify-between bg-white shadow-sm">
+                    <div class="flex items-center gap-5">
+                        <div class="w-14 h-14 bg-amber-100 rounded-2xl flex items-center justify-center text-amber-600 font-black text-xl">5</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800">가타카나 집중 (1)</h3>
+                            <p class="text-slate-400 font-medium">단어 외래어 준비, 20자</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-amber-300 group-hover:translate-x-1 transition"></i>
+                </div>
+
+                <div onclick="goToDay(6)" class="group p-6 border-2 border-slate-100 rounded-[2rem] cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/30 transition flex items-center justify-between bg-white shadow-sm">
+                    <div class="flex items-center gap-5">
+                        <div class="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 font-black text-xl">6</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800">가타카나 집중 (2)</h3>
+                            <p class="text-slate-400 font-medium">마지막 조각 맞추기, 26자</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-arrow-right text-orange-300 group-hover:translate-x-1 transition"></i>
+                </div>
+
+                <div onclick="goToDay(7)" class="p-6 bg-indigo-900 rounded-[2rem] cursor-pointer transition flex items-center justify-between shadow-2xl text-white hover:scale-[1.02]">
+                    <div class="flex items-center gap-5">
+                        <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-yellow-400 font-black text-2xl animate-pulse"><i class="fas fa-star"></i></div>
+                        <div>
+                            <h3 class="text-xl font-bold">최종 마스터 챌린지</h3>
+                            <p class="text-indigo-200 font-medium text-sm">모든 문자 퀴즈 정복하기</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-trophy text-yellow-500 text-2xl"></i>
+                </div>
+            </div>
+        </main>
+
+        <!-- 2. Study Content -->
+        <main id="content-study" class="flex-1 p-4 hidden">
+            <div class="sticky top-[80px] bg-white py-4 z-20 border-b mb-6">
+                <div class="flex items-center justify-between mb-4 px-2">
+                    <h2 id="study-title" class="text-2xl font-black text-indigo-600 italic">Day 1 학습</h2>
+                    <button onclick="resetFilter()" class="text-sm font-bold text-slate-400 hover:text-indigo-500 transition">
+                        <i class="fas fa-redo-alt mr-1"></i>전체 보기
+                    </button>
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="setCharType('hira')" id="btn-hira" class="flex-1 py-3 rounded-2xl bg-indigo-600 text-white text-lg font-bold shadow-md">히라가나</button>
+                    <button onclick="setCharType('kata')" id="btn-kata" class="flex-1 py-3 rounded-2xl bg-gray-100 text-gray-500 text-lg font-bold">가타카나</button>
+                </div>
+            </div>
+            <div id="char-list" class="space-y-10"></div>
+        </main>
+
+        <!-- 3. Quiz Content -->
+        <main id="content-quiz" class="flex-1 p-6 hidden flex flex-col items-center">
+            <div id="quiz-container" class="w-full max-w-md">
+                <div class="flex justify-between items-center mb-6">
+                    <span class="bg-indigo-50 px-5 py-2 rounded-full border border-indigo-100 font-bold text-indigo-600">성공: <span id="score">0</span></span>
+                    <span id="quiz-progress" class="bg-gray-50 px-5 py-2 rounded-full border border-gray-100 font-bold text-slate-500">1 / 10</span>
+                </div>
+                <div class="bg-white border-4 border-indigo-50 rounded-[3rem] p-12 mb-8 text-center shadow-2xl relative overflow-hidden">
+                    <div id="quiz-question" class="jp-font text-giant font-bold text-indigo-900 leading-none relative z-10">あ</div>
+                    <div class="absolute -right-5 -bottom-5 text-indigo-50 text-[10rem] opacity-50"><i class="fas fa-question"></i></div>
+                </div>
+                <div id="quiz-options" class="grid grid-cols-2 gap-4"></div>
+            </div>
+            <div id="quiz-result" class="hidden text-center py-20 w-full">
+                <div class="text-[10rem] mb-8 leading-none">🎖️</div>
+                <h2 class="text-4xl font-black text-slate-800 mb-2">대단해요 지윤님!</h2>
+                <p class="text-2xl text-slate-500 mb-12">점수: <span id="final-score" class="text-indigo-600 font-black">0</span> / 10</p>
+                <button onclick="startQuiz()" class="w-full max-w-sm bg-indigo-600 text-white py-6 rounded-[2rem] text-2xl font-bold shadow-xl active:scale-95 transition">다시 도전</button>
+            </div>
+        </main>
+
+        <!-- Detail Modal -->
+        <div id="detail-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-6 z-50 hidden" onclick="closeModal()">
+            <div class="bg-white rounded-[3rem] p-10 max-w-md w-full text-center relative shadow-2xl" onclick="event.stopPropagation()">
+                <button onclick="closeModal()" class="absolute top-6 right-8 text-gray-300 text-4xl hover:text-indigo-400 transition"><i class="fas fa-times"></i></button>
+                <div id="modal-char" class="jp-font text-giant font-bold text-indigo-600 mb-2 leading-none">あ</div>
+                <div id="modal-reading" class="text-4xl font-black text-slate-800 mb-8">a (아)</div>
+                <div class="bg-indigo-50 rounded-[2.5rem] p-8 mb-10 border-2 border-dashed border-indigo-100 relative">
+                    <div id="modal-mnemonic-img" class="text-7xl mb-4">🎨</div>
+                    <p id="modal-mnemonic" class="text-2xl text-slate-700 font-medium leading-relaxed">설명</p>
+                </div>
+                <button onclick="playAudio()" class="w-full py-6 bg-indigo-600 rounded-[2rem] text-white text-2xl font-bold flex items-center justify-center gap-4 shadow-xl active:scale-95 transition">
+                    <i class="fas fa-volume-up"></i><span>발음 듣기</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const fullDataset = [
+            { dayId: 1, row: 'あ (아)행', items: [
+                { hira: 'あ', kata: 'ア', romaji: 'a', ko: '아', mnemonic: '낚시바늘에 걸린 "아"기 물고기', icon: '🐟' },
+                { hira: 'い', kata: 'イ', romaji: 'i', ko: '이', mnemonic: '길쭉한 "이"빨 두 개', icon: '🦷' },
+                { hira: 'う', kata: 'ウ', romaji: 'u', ko: '우', mnemonic: '옆으로 누운 "우"산 모양', icon: '☂️' },
+                { hira: 'え', kata: 'エ', romaji: 'e', ko: '에', mnemonic: '"에"너제틱하게 달리는 사람', icon: '🏃' },
+                { hira: 'お', kata: 'オ', romaji: 'o', ko: '오', mnemonic: '"오"리 주둥이와 몸통', icon: '🦆' }
+            ]},
+            { dayId: 1, row: 'か (카)행', items: [
+                { hira: 'か', kata: 'カ', romaji: 'ka', ko: '카', mnemonic: '"카"메라 셔터를 찰칵!', icon: '📷' },
+                { hira: 'き', kata: 'キ', romaji: 'ki', ko: '키', mnemonic: '"키"(열쇠) 구멍 모양', icon: '🔑' },
+                { hira: 'く', kata: 'ク', romaji: 'ku', ko: '쿠', mnemonic: '"쿠"키 먹으려 벌린 입', icon: '🍪' },
+                { hira: 'け', kata: 'ケ', romaji: 'ke', ko: '케', mnemonic: '"케"이크 자르는 나이프', icon: '🍰' },
+                { hira: 'こ', kata: 'コ', romaji: 'ko', ko: '코', mnemonic: '"코"끼리의 상아 모습', icon: '🐘' }
+            ]},
+            { dayId: 2, row: 'さ (사)행', items: [
+                { hira: 'さ', kata: 'サ', romaji: 'sa', ko: '사', mnemonic: '"사"과 속의 씨앗 두 개', icon: '🍎' },
+                { hira: 'し', kata: 'シ', romaji: 'shi', ko: '시', mnemonic: '"시"원한 낚시바늘', icon: '🎣' },
+                { hira: 'す', kata: 'ス', romaji: 'su', ko: '스', mnemonic: '"스"프링처럼 꼬인 꼬리', icon: '🌀' },
+                { hira: 'せ', kata: 'セ', romaji: 'se', ko: '세', mnemonic: '"세"상 밖으로 뻗은 손', icon: '🖐️' },
+                { hira: 'そ', kata: 'ソ', romaji: 'so', ko: '소', mnemonic: '"소"용돌이치는 물결', icon: '🌪️' }
+            ]},
+            { dayId: 2, row: 'た (타)행', items: [
+                { hira: 'た', kata: 'タ', romaji: 'ta', ko: '타', mnemonic: '"타"자 치는 손가락', icon: '⌨️' },
+                { hira: 'ち', kata: 'チ', romaji: 'chi', ko: '치', mnemonic: '"치"즈 조각과 포크', icon: '🧀' },
+                { hira: 'つ', kata: 'ツ', romaji: 'tsu', ko: '츠', mnemonic: '"츠"나미(파도)가 몰아쳐요', icon: '🌊' },
+                { hira: 'て', kata: 'テ', romaji: 'te', ko: '테', mnemonic: '"테"이블의 다리 모양', icon: '🪑' },
+                { hira: '토', kata: 'ト', romaji: 'to', ko: '토', mnemonic: '"토"끼의 쫑긋한 귀', icon: '🐰' }
+            ]},
+            { dayId: 3, row: 'な (나)행', items: [
+                { hira: 'な', kata: 'ナ', romaji: 'na', ko: '나', mnemonic: '"나"비의 날개짓', icon: '🦋' },
+                { hira: 'に', kata: 'ニ', romaji: 'ni', ko: '니', mnemonic: '"니"트 짜는 바늘 두 개', icon: '🧶' },
+                { hira: 'ぬ', kata: 'ヌ', romaji: 'nu', ko: '누', mnemonic: '"누"에고치가 꼬였네', icon: '🐛' },
+                { hira: 'ね', kata: 'ネ', romaji: 'ne', ko: '네', mnemonic: '"네"코(고양이)의 꼬리', icon: '🐱' },
+                { hira: 'の', kata: 'ノ', romaji: 'no', ko: '노', mnemonic: '"노"(No)라고 하는 금지표시', icon: '🚫' }
+            ]},
+            { dayId: 3, row: 'は (하)행', items: [
+                { hira: 'は', kata: 'ハ', romaji: 'ha', ko: '하', mnemonic: '"하"프를 연주해요', icon: '🎵' },
+                { hira: 'ひ', kata: 'ヒ', romaji: 'hi', ko: '히', mnemonic: '"히"죽 웃는 입 모양', icon: '😊' },
+                { hira: 'ふ', kata: 'フ', romaji: 'fu', ko: '후', mnemonic: '"후"후 불고 있는 입', icon: '😗' },
+                { hira: 'へ', kata: 'ヘ', romaji: 'he', ko: '헤', mnemonic: '"헤"드(머리) 위 산모양', icon: '⛰️' },
+                { hira: 'ほ', kata: 'ホ', romaji: 'ho', ko: '호', mnemonic: '"호"두 껍질이 벌어짐', icon: '🥥' }
+            ]},
+            { dayId: 4, row: '마무리행 (1/2)', items: [
+                { hira: 'ま', kata: 'マ', romaji: 'ma', ko: '마', mnemonic: '"마"법사의 지팡이', icon: '🪄' },
+                { hira: 'み', kata: 'ミ', romaji: 'mi', ko: '미', mnemonic: '"미"로처럼 꼬인 길', icon: '🌀' },
+                { hira: 'む', kata: 'ム', romaji: 'mu', ko: '무', mnemonic: '"무"거운 짐을 든 소', icon: '🐂' },
+                { hira: 'め', kata: '메', romaji: 'me', ko: '메', mnemonic: '"메"추리 알을 닮은 눈', icon: '👁️' },
+                { hira: 'も', kata: 'モ', romaji: 'mo', ko: '모', mnemonic: '"모"내기 할 때 쓰는 갈고리', icon: '⛏️' }
+            ]},
+            { dayId: 4, row: '마무리행 (2/2)', items: [
+                { hira: 'や', kata: 'ヤ', romaji: 'ya', ko: '야', mnemonic: '"야"구 방망이와 공', icon: '⚾' },
+                { hira: 'ゆ', kata: 'ユ', romaji: 'yu', ko: '유', mnemonic: '"유"선형 물고기 몸통', icon: '🐟' },
+                { hira: 'よ', kata: 'ヨ', romaji: 'yo', ko: '요', mnemonic: '"요"요가 매달린 모양', icon: '🪀' },
+                { hira: 'ら', kata: 'ラ', romaji: 'ra', ko: '라', mnemonic: '"라"디오 안테나 세움', icon: '📻' },
+                { hira: 'り', kata: '리', romaji: 'ri', ko: '리', mnemonic: '"리"본 두 가닥', icon: '🎀' },
+                { hira: 'る', kata: 'ル', romaji: 'ru', ko: '루', mnemonic: '"루"프(고리)가 있는 길', icon: '➰' },
+                { hira: 'れ', kata: 'レ', romaji: 're', ko: '레', mnemonic: '"레"슬링 선수의 등', icon: '🤼' },
+                { hira: 'ろ', kata: 'ロ', romaji: 'ro', ko: '로', mnemonic: '"로"켓이 지나간 꼬리', icon: '🚀' },
+                { hira: 'わ', kata: 'ワ', romaji: 'wa', ko: '와', mnemonic: '"와"인 잔의 곡선', icon: '🍷' },
+                { hira: 'を', kata: 'ヲ', romaji: 'wo', ko: '오', mnemonic: '"오"색찬란한 원반', icon: '💿' },
+                { hira: 'ん', kata: 'ン', romaji: 'n', ko: '응', mnemonic: '"응"하고 대답하는 입', icon: '💬' }
+            ]}
+        ];
+
+        const kataDays = {
+            5: ['あ행', 'か행', 'さ행', 'た행'],
+            6: ['나행', '하행', '마무리행 (1/2)', '마무리행 (2/2)']
         };
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        let currentType = 'hira';
+        let currentDayFilter = null;
+        let quizState = { score: 0, index: 0, correctAnswer: null };
+
+        function switchTab(tab) {
+            ['plan', 'study', 'quiz'].forEach(t => {
+                document.getElementById(`content-${t}`).classList.toggle('hidden', t !== tab);
+                const btn = document.getElementById(`tab-${t}`);
+                if (btn) btn.className = t === tab ? 'flex-1 py-5 text-xl font-bold text-indigo-600 border-b-4 border-indigo-600' : 'flex-1 py-5 text-xl font-bold text-gray-400 border-b-4 border-transparent';
+            });
+            if (tab === 'quiz') startQuiz();
+            window.scrollTo(0, 0);
+        }
+
+        function goToDay(day) {
+            currentDayFilter = day;
+            if (day === 7) { switchTab('quiz'); return; }
+            setCharType(day >= 5 ? 'kata' : 'hira');
+            document.getElementById('study-title').innerText = `DAY ${day} 집중 학습`;
+            switchTab('study');
+            renderStudyList();
+        }
+
+        function resetFilter() {
+            currentDayFilter = null;
+            document.getElementById('study-title').innerText = `전체 문자 보기`;
+            renderStudyList();
+        }
+
+        function setCharType(type) {
+            currentType = type;
+            document.getElementById('btn-hira').className = type === 'hira' ? 'flex-1 py-3 rounded-2xl bg-indigo-600 text-white text-lg font-bold shadow-md' : 'flex-1 py-3 rounded-2xl bg-gray-100 text-gray-500 text-lg font-bold';
+            document.getElementById('btn-kata').className = type === 'kata' ? 'flex-1 py-3 rounded-2xl bg-indigo-600 text-white text-lg font-bold shadow-md' : 'flex-1 py-3 rounded-2xl bg-gray-100 text-gray-500 text-lg font-bold';
+            renderStudyList();
+        }
+
+        function renderStudyList() {
+            const list = document.getElementById('char-list');
+            list.innerHTML = '';
+            let filteredData = fullDataset;
+            if (currentDayFilter) {
+                if (currentDayFilter <= 4) filteredData = fullDataset.filter(g => g.dayId === currentDayFilter);
+                else filteredData = fullDataset.filter(g => kataDays[currentDayFilter].some(name => g.row.includes(name)));
+            }
+            filteredData.forEach(group => {
+                const section = document.createElement('div');
+                section.innerHTML = `<h3 class="text-xl font-black text-slate-300 mb-4 px-2 italic uppercase border-l-4 border-indigo-100 pl-4">${group.row}</h3>`;
+                const grid = document.createElement('div');
+                grid.className = 'grid grid-cols-5 gap-3';
+                group.items.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'character-card bg-white border-2 border-slate-50 rounded-[1.5rem] py-6 text-center shadow-sm cursor-pointer';
+                    card.onclick = () => showDetail(item);
+                    card.innerHTML = `<div class="jp-font text-5xl font-bold text-slate-800 leading-none mb-1">${item[currentType]}</div><div class="text-xs text-indigo-400 font-black uppercase">${item.romaji}</div>`;
+                    grid.appendChild(card);
+                });
+                section.appendChild(grid);
+                list.appendChild(section);
+            });
+        }
+
+        function showDetail(item) {
+            document.getElementById('modal-char').innerText = item[currentType];
+            document.getElementById('modal-reading').innerText = `${item.romaji} (${item.ko})`;
+            document.getElementById('modal-mnemonic').innerText = item.mnemonic;
+            document.getElementById('modal-mnemonic-img').innerText = item.icon;
+            document.getElementById('detail-modal').classList.remove('hidden');
+        }
+
+        function closeModal() { document.getElementById('detail-modal').classList.add('hidden'); }
+
+        function playAudio() {
+            const msg = new SpeechSynthesisUtterance(document.getElementById('modal-char').innerText);
+            msg.lang = 'ja-JP'; msg.rate = 0.85; window.speechSynthesis.speak(msg);
+        }
+
+        function startQuiz() {
+            quizState.score = 0; quizState.index = 0;
+            document.getElementById('quiz-container').classList.remove('hidden');
+            document.getElementById('quiz-result').classList.add('hidden');
+            nextQuestion();
+        }
+
+        function nextQuestion() {
+            if (quizState.index >= 10) { showResult(); return; }
+            const allItems = fullDataset.flatMap(g => g.items);
+            const correctItem = allItems[Math.floor(Math.random() * allItems.length)];
+            quizState.correctAnswer = correctItem.ko;
+            document.getElementById('quiz-question').innerText = correctItem[Math.random() > 0.5 ? 'hira' : 'kata'];
+            document.getElementById('quiz-progress').innerText = `${quizState.index + 1} / 10`;
+            document.getElementById('score').innerText = quizState.score;
+
+            let options = [correctItem.ko];
+            while (options.length < 4) {
+                const rKo = allItems[Math.floor(Math.random() * allItems.length)].ko;
+                if (!options.includes(rKo)) options.push(rKo);
+            }
+            options.sort(() => Math.random() - 0.5);
+            const container = document.getElementById('quiz-options');
+            container.innerHTML = '';
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'py-6 bg-white border-2 border-slate-100 rounded-3xl text-2xl font-bold text-slate-700 active:scale-95 transition shadow-sm';
+                btn.innerText = opt;
+                btn.onclick = () => {
+                    const isCorrect = opt === quizState.correctAnswer;
+                    if (isCorrect) quizState.score++;
+                    showFeedback(isCorrect);
+                    setTimeout(() => { quizState.index++; nextQuestion(); }, 600);
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function showFeedback(isCorrect) {
+            const f = document.createElement('div');
+            f.className = 'fixed inset-0 flex items-center justify-center z-[100] pointer-events-none';
+            f.innerHTML = `<div class="text-[12rem] animate-ping">${isCorrect ? '⭕' : '❌'}</div>`;
+            document.body.appendChild(f); setTimeout(() => f.remove(), 600);
+        }
+
+        function showResult() {
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('quiz-result').classList.remove('hidden');
+            document.getElementById('final-score').innerText = quizState.score;
+        }
+
+        renderStudyList();
     </script>
 </body>
 </html>
