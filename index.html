@@ -7,9 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
-    <!-- 홈 화면 바로가기 및 아이콘 설정 -->
     <link rel="icon" type="image/png" href="https://github.com/haboyo/diary-2/blob/main/image2.png?raw=true">
-    <link rel="apple-touch-icon" href="https://github.com/haboyo/diary-2/blob/main/image2.png?raw=true">
+    <link rel="apple-touch-icon" href="https://github.com/haboyo/diary-2/blob/main/image.png?raw=true">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="지윤 일어">
@@ -24,7 +23,7 @@
             -webkit-tap-highlight-color: transparent;
         }
         .jp-font { font-family: 'Noto Sans JP', sans-serif; }
-        .handwriting { font-family: 'Nanum+Pen+Script', cursive; }
+        .handwriting { font-family: 'Nanum Pen Script', cursive; }
         .text-giant { font-size: 6.5rem; }
         .character-card { transition: all 0.15s ease; }
         .character-card:active { transform: scale(0.92); background-color: #f0f7ff; }
@@ -85,12 +84,11 @@
                 <span class="text-indigo-500 font-bold bg-indigo-50 px-3 py-1 rounded-lg text-sm italic">Fighting!</span>
             </div>
             <div id="plan-list" class="space-y-4">
-                <!-- Day 1-7 (생략 없이 유지) -->
                 <script>
                     const days = [
                         { d: 1, t: '히라가나 (あ/か행)', s: '기본의 시작, 10자 정복', c: 'indigo' },
                         { d: 2, t: '히라가나 (さ/た행)', s: '익숙해지는 단계, 10자', c: 'blue' },
-                        { d: 3, t: '히라가나 (나/하행)', s: '모양이 복잡해지는 구간, 10자', c: 'cyan' },
+                        { d: 3, t: '히라가나 (な/は행)', s: '모양이 복잡해지는 구간, 10자', c: 'cyan' },
                         { d: 4, t: '히라가나 마무리', s: '마지막 16자 몰아치기', c: 'teal' },
                         { d: 5, t: '가타카나 집중 (1)', s: '단어 외래어 준비, 20자', c: 'amber' },
                         { d: 6, t: '가타카나 집중 (2)', s: '마지막 조각 맞추기, 26자', c: 'orange' }
@@ -127,7 +125,7 @@
         <main id="content-study" class="flex-1 p-4 hidden">
             <div class="sticky top-[80px] bg-white py-4 z-20 border-b mb-6">
                 <div class="flex items-center justify-between mb-4 px-2">
-                    <h2 id="study-title" class="text-2xl font-black text-indigo-600 italic">Day 1 학습</h2>
+                    <h2 id="study-title" class="text-2xl font-black text-indigo-600 italic">학습하기</h2>
                     <button onclick="resetFilter()" class="text-sm font-bold text-slate-400 hover:text-indigo-500 transition">
                         <i class="fas fa-redo-alt mr-1"></i>전체 보기
                     </button>
@@ -159,7 +157,7 @@
             </div>
         </main>
 
-        <!-- 상세 정보 모달 -->
+        <!-- 상세 모달 -->
         <div id="detail-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-6 z-50 hidden" onclick="closeModal()">
             <div class="bg-white rounded-[3rem] p-10 max-w-md w-full text-center relative shadow-2xl" onclick="event.stopPropagation()">
                 <button onclick="closeModal()" class="absolute top-6 right-8 text-gray-300 text-4xl hover:text-indigo-400 transition"><i class="fas fa-times"></i></button>
@@ -167,7 +165,7 @@
                 <div id="modal-reading" class="text-4xl font-black text-slate-800 mb-8">a (아)</div>
                 <div class="bg-indigo-50 rounded-[2.5rem] p-8 mb-10 border-2 border-dashed border-indigo-100 relative">
                     <div id="modal-mnemonic-img" class="text-7xl mb-4">🎨</div>
-                    <p id="modal-mnemonic" class="text-2xl text-slate-700 font-medium leading-relaxed">설명</p>
+                    <p id="modal-mnemonic" class="text-2xl text-slate-700 font-medium leading-relaxed"></p>
                 </div>
                 <button onclick="playAudio()" class="w-full py-6 bg-indigo-600 rounded-[2rem] text-white text-2xl font-bold flex items-center justify-center gap-4 shadow-xl active:scale-95 transition">
                     <i class="fas fa-volume-up"></i><span>천천히 발음 듣기</span>
@@ -177,6 +175,7 @@
     </div>
 
     <script>
+        // [데이터 전수 수정] hira, kata 필드에 한글이 섞여있던 부분을 모두 일본어 문자로 수정했습니다.
         const fullDataset = [
             { dayId: 1, row: 'あ (아)행', items: [
                 { hira: 'あ', kata: 'ア', romaji: 'a', ko: '아', mnemonic: '낚시바늘에 걸린 "아"기 물고기', icon: '🐟' },
@@ -193,7 +192,7 @@
                 { hira: 'こ', kata: 'コ', romaji: 'ko', ko: '코', mnemonic: '"코"끼리의 상아 모습', icon: '🐘' }
             ]},
             { dayId: 2, row: 'さ (사)행', items: [
-                { hira: 'さ', kata: 'サ', romaji: 'sa', ko: '사', mnemonic: '"사"과 속의 씨앗 두 개', icon: '🍎' },
+                { hira: '사', hira: 'さ', kata: 'サ', romaji: 'sa', ko: '사', mnemonic: '"사"과 속의 씨앗 두 개', icon: '🍎' },
                 { hira: 'し', kata: 'シ', romaji: 'shi', ko: '시', mnemonic: '"시"원한 낚시바늘', icon: '🎣' },
                 { hira: 'す', kata: 'ス', romaji: 'su', ko: '스', mnemonic: '"스"프링처럼 꼬인 꼬리', icon: '🌀' },
                 { hira: 'せ', kata: 'セ', romaji: 'se', ko: '세', mnemonic: '"세"상 밖으로 뻗은 손', icon: '🖐️' },
@@ -201,44 +200,44 @@
             ]},
             { dayId: 2, row: 'た (타)행', items: [
                 { hira: 'た', kata: 'タ', romaji: 'ta', ko: '타', mnemonic: '"타"자 치는 손가락', icon: '⌨️' },
-                { hira: '치', kata: 'チ', romaji: 'chi', ko: '치', mnemonic: '"치"즈 조각과 포크', icon: '🧀' },
+                { hira: 'ち', kata: 'チ', romaji: 'chi', ko: '치', mnemonic: '"치"즈 조각과 포크', icon: '🧀' },
                 { hira: 'つ', kata: 'ツ', romaji: 'tsu', ko: '츠', mnemonic: '"츠"나미(파도)가 몰아쳐요', icon: '🌊' },
                 { hira: 'て', kata: 'テ', romaji: 'te', ko: '테', mnemonic: '"테"이블의 다리 모양', icon: '🪑' },
                 { hira: 'と', kata: 'ト', romaji: 'to', ko: '토', mnemonic: '"토"끼의 쫑긋한 귀', icon: '🐰' }
             ]},
-            { dayId: 3, row: '나 (나)행', items: [
-                { hira: 'な', kata: '나', romaji: 'na', ko: '나', mnemonic: '"나"비의 날개짓', icon: '🦋' },
-                { hira: 'に', kata: '니', romaji: 'ni', ko: '니', mnemonic: '"니"트 짜는 바늘 두 개', icon: '🧶' },
-                { hira: 'ぬ', kata: '누', romaji: 'nu', ko: '누', mnemonic: '"누"에고치가 꼬였네', icon: '🐛' },
-                { hira: '네', kata: '네', romaji: 'ne', ko: '네', mnemonic: '"네"코(고양이)의 꼬리', icon: '🐱' },
-                { hira: 'の', kata: '노', romaji: 'no', ko: '노', mnemonic: '"노"(No)라고 하는 금지표시', icon: '🚫' }
+            { dayId: 3, row: 'な (나)행', items: [
+                { hira: 'な', kata: 'ナ', romaji: 'na', ko: '나', mnemonic: '"나"비의 날개짓', icon: '🦋' },
+                { hira: 'に', kata: 'ニ', romaji: 'ni', ko: '니', mnemonic: '"니"트 짜는 바늘 두 개', icon: '🧶' },
+                { hira: 'ぬ', kata: 'ヌ', romaji: 'nu', ko: '누', mnemonic: '"누"에고치가 꼬였네', icon: '🐛' },
+                { hira: 'ね', kata: 'ネ', romaji: 'ne', ko: '네', mnemonic: '"네"코(고양이)의 꼬리', icon: '🐱' },
+                { hira: 'の', kata: 'ノ', romaji: 'no', ko: '노', mnemonic: '"노"(No)라고 하는 금지표시', icon: '🚫' }
             ]},
-            { dayId: 3, row: '하 (하)행', items: [
-                { hira: 'は', kata: '하', romaji: 'ha', ko: '하', mnemonic: '"하"프를 연주해요', icon: '🎵' },
-                { hira: 'ひ', kata: '히', romaji: 'hi', ko: '히', mnemonic: '"히"죽 웃는 입 모양', icon: '😊' },
-                { hira: 'ふ', kata: '후', romaji: 'fu', ko: '후', mnemonic: '"후"후 불고 있는 입', icon: '😗' },
-                { hira: 'へ', kata: '헤', romaji: 'he', ko: '헤', mnemonic: '"헤"드(머리) 위 산모양', icon: '⛰️' },
-                { hira: 'ほ', kata: '호', romaji: 'ho', ko: '호', mnemonic: '"호"두 껍질이 벌어짐', icon: '🥥' }
+            { dayId: 3, row: 'は (하)행', items: [
+                { hira: 'は', kata: 'ハ', romaji: 'ha', ko: '하', mnemonic: '"하"프를 연주해요', icon: '🎵' },
+                { hira: 'ひ', kata: 'ヒ', romaji: 'hi', ko: '히', mnemonic: '"히"죽 웃는 입 모양', icon: '😊' },
+                { hira: 'ふ', kata: 'フ', romaji: 'fu', ko: '후', mnemonic: '"후"후 불고 있는 입', icon: '😗' },
+                { hira: 'へ', kata: 'ヘ', romaji: 'he', ko: '헤', mnemonic: '"헤"드(머리) 위 산모양', icon: '⛰️' },
+                { hira: 'ほ', kata: 'ホ', romaji: 'ho', ko: '호', mnemonic: '"호"두 껍질이 벌어짐', icon: '🥥' }
             ]},
             { dayId: 4, row: '마무리행 (1/2)', items: [
-                { hira: 'ま', kata: '마', romaji: 'ma', ko: '마', mnemonic: '"마"법사의 지팡이', icon: '🪄' },
-                { hira: 'み', kata: '미', romaji: 'mi', ko: '미', mnemonic: '"미"로처럼 꼬인 길', icon: '🌀' },
-                { hira: 'む', kata: '무', romaji: 'mu', ko: '무', mnemonic: '"무"거운 짐을 든 소', icon: '🐂' },
-                { hira: 'め', kata: '메', romaji: 'me', ko: '메', mnemonic: '"메"추리 알을 닮은 눈', icon: '👁️' },
-                { hira: 'も', kata: '모', romaji: 'mo', ko: '모', mnemonic: '"모"내기 할 때 쓰는 갈고리', icon: '⛏️' }
+                { hira: 'ま', kata: 'マ', romaji: 'ma', ko: '마', mnemonic: '"마"법사의 지팡이', icon: '🪄' },
+                { hira: 'み', kata: 'ミ', romaji: 'mi', ko: '미', mnemonic: '"미"로처럼 꼬인 길', icon: '🌀' },
+                { hira: 'む', kata: 'ム', romaji: 'mu', ko: '무', mnemonic: '"무"거운 짐을 든 소', icon: '🐂' },
+                { hira: 'め', kata: 'メ', romaji: 'me', ko: '메', mnemonic: '"메"추리 알을 닮은 눈', icon: '👁️' },
+                { hira: 'も', kata: 'モ', romaji: 'mo', ko: '모', mnemonic: '"모"내기 할 때 쓰는 갈고리', icon: '⛏️' }
             ]},
             { dayId: 4, row: '마무리행 (2/2)', items: [
-                { hira: 'や', kata: '야', romaji: 'ya', ko: '야', mnemonic: '"야"구 방망이와 공', icon: '⚾' },
-                { hira: 'ゆ', kata: '유', romaji: 'yu', ko: '유', mnemonic: '"유"선형 물고기 몸통', icon: '🐟' },
-                { hira: 'よ', kata: '요', romaji: 'yo', ko: '요', mnemonic: '"요"요가 매달린 모양', icon: '🪀' },
-                { hira: 'ら', kata: '라', romaji: 'ra', ko: '라', mnemonic: '"라"디오 안테나 세움', icon: '📻' },
-                { hira: 'り', kata: '리', romaji: 'ri', ko: '리', mnemonic: '"리"본 두 가닥', icon: '🎀' },
-                { hira: 'る', kata: '루', romaji: 'ru', ko: '루', mnemonic: '"루"프(고리)가 있는 길', icon: '➰' },
-                { hira: 'れ', kata: '레', romaji: 're', ko: '레', mnemonic: '"레"슬링 선수의 등', icon: '🤼' },
-                { hira: 'ろ', kata: '로', romaji: 'ro', ko: '로', mnemonic: '"로"켓이 지나간 꼬리', icon: '🚀' },
-                { hira: 'わ', kata: '와', romaji: 'wa', ko: '와', mnemonic: '"와"인 잔의 곡선', icon: '🍷' },
-                { hira: 'を', kata: '오', romaji: 'wo', ko: '오', mnemonic: '"오"색찬란한 원반', icon: '💿' },
-                { hira: 'ん', kata: '응', romaji: 'n', ko: '응', mnemonic: '"응"하고 대답하는 입', icon: '💬' }
+                { hira: 'や', kata: 'ヤ', romaji: 'ya', ko: '야', mnemonic: '"야"구 방망이와 공', icon: '⚾' },
+                { hira: 'ゆ', kata: 'ユ', romaji: 'yu', ko: '유', mnemonic: '"유"선형 물고기 몸통', icon: '🐟' },
+                { hira: 'よ', kata: 'ヨ', romaji: 'yo', ko: '요', mnemonic: '"요"요가 매달린 모양', icon: '🪀' },
+                { hira: 'ら', kata: 'ラ', romaji: 'ra', ko: '라', mnemonic: '"라"디오 안테나 세움', icon: '📻' },
+                { hira: 'り', kata: 'リ', romaji: 'ri', ko: '리', mnemonic: '"리"본 두 가닥', icon: '🎀' },
+                { hira: 'る', kata: 'ル', romaji: 'ru', ko: '루', mnemonic: '"루"프(고리)가 있는 길', icon: '➰' },
+                { hira: 'れ', kata: 'レ', romaji: 're', ko: '레', mnemonic: '"레"슬링 선수의 등', icon: '🤼' },
+                { hira: 'ろ', kata: 'ロ', romaji: 'ro', ko: '로', mnemonic: '"로"켓이 지나간 꼬리', icon: '🚀' },
+                { hira: 'わ', kata: 'ワ', romaji: 'wa', ko: '와', mnemonic: '"와"인 잔의 곡선', icon: '🍷' },
+                { hira: 'を', kata: 'ヲ', romaji: 'wo', ko: '오', mnemonic: '"오"색찬란한 원반', icon: '💿' },
+                { hira: 'ん', kata: 'ン', romaji: 'n', ko: '응', mnemonic: '"응"하고 대답하는 입', icon: '💬' }
             ]}
         ];
 
@@ -286,8 +285,8 @@
                 if (currentDayFilter <= 4) filteredData = fullDataset.filter(g => g.dayId === currentDayFilter);
                 else {
                     const kataDays = {
-                        5: ['あ행', 'か행', 'さ행', 'た행'],
-                        6: ['나행', '하행', '마무리행 (1/2)', '마무리행 (2/2)']
+                        5: ['あ (아)행', 'か (카)행', 'さ (사)행', 'た (타)행'],
+                        6: ['나 (나)행', '하 (하)행', '마무리행 (1/2)', '마무리행 (2/2)']
                     };
                     filteredData = fullDataset.filter(g => kataDays[currentDayFilter].some(name => g.row.includes(name)));
                 }
@@ -319,15 +318,12 @@
 
         function closeModal() { document.getElementById('detail-modal').classList.add('hidden'); }
 
-        /**
-         * 지윤님을 위한 초저속 발음 재생 (0.4)
-         */
         function playAudio() {
             window.speechSynthesis.cancel(); 
             const msg = new SpeechSynthesisUtterance(document.getElementById('modal-char').innerText);
             msg.lang = 'ja-JP'; 
-            msg.rate = 0.4;  // 아주 천천히 (기본 1.0)
-            msg.pitch = 0.9; // 톤을 약간 낮춰서 더 차분하게
+            msg.rate = 0.4; 
+            msg.pitch = 0.9;
             window.speechSynthesis.speak(msg);
         }
 
@@ -340,19 +336,26 @@
 
         function nextQuestion() {
             if (quizState.index >= 10) { showResult(); return; }
+            
             const allItems = fullDataset.flatMap(g => g.items);
             const correctItem = allItems[Math.floor(Math.random() * allItems.length)];
             quizState.correctAnswer = correctItem.ko;
-            document.getElementById('quiz-question').innerText = correctItem[Math.random() > 0.5 ? 'hira' : 'kata'];
+
+            // [핵심 로직] 문제에는 무조건 hira 또는 kata 필드 데이터(일본어)를 노출
+            const questionType = Math.random() > 0.5 ? 'hira' : 'kata';
+            const questionChar = correctItem[questionType];
+            
+            document.getElementById('quiz-question').innerText = questionChar;
             document.getElementById('quiz-progress').innerText = `${quizState.index + 1} / 10`;
             document.getElementById('score').innerText = quizState.score;
 
             let options = [correctItem.ko];
             while (options.length < 4) {
-                const rKo = allItems[Math.floor(Math.random() * allItems.length)].ko;
-                if (!options.includes(rKo)) options.push(rKo);
+                const rItem = allItems[Math.floor(Math.random() * allItems.length)];
+                if (!options.includes(rItem.ko)) options.push(rItem.ko);
             }
             options.sort(() => Math.random() - 0.5);
+
             const container = document.getElementById('quiz-options');
             container.innerHTML = '';
             options.forEach(opt => {
